@@ -334,14 +334,14 @@ button {
 .cell-header {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 0;
   max-width: 100%;
   min-height: var(--cell-control-size);
-  padding: 0 7px;
-  border: 1px solid var(--line);
+  padding: 0;
+  border: 1px solid transparent;
   border-radius: 7px;
   color: #344054;
-  background: var(--surface);
+  background: transparent;
   font-family: var(--mono);
   font-size: 12px;
   font-weight: 700;
@@ -349,23 +349,31 @@ button {
 
 .cell-header input {
   height: 22px;
+  box-sizing: content-box;
   min-width: 0;
-  border: 1px solid var(--line);
+  border: 1px solid transparent;
   border-radius: 6px;
   color: var(--text);
-  background: var(--surface);
+  background: transparent;
   font-family: var(--mono);
   font-size: 12px;
+  text-align: center;
   outline: 0;
 }
 
 .cell-header input {
-  width: auto;
-  padding: 0 7px;
+  width: calc(var(--type-input-width, 6ch) + 0.5ch);
+  padding: 0;
+}
+
+.cell-header input:hover {
+  border-color: var(--line);
+  background: var(--surface);
 }
 
 .cell-header input:focus {
   border-color: #93c5fd;
+  background: var(--surface);
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
 }
 

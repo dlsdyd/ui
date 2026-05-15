@@ -37,6 +37,12 @@ function normalizeType(type) {
   return type && type.trim() ? type.trim().toLowerCase() : "python";
 }
 
+function fitTypeInput(input) {
+  const typeLength = Math.max(normalizeType(input.value).length, 4);
+  input.size = typeLength;
+  input.style.setProperty("--type-input-width", `${typeLength}ch`);
+}
+
 function renumberCells() {
   document.querySelectorAll(".cell").forEach((cell, index) => {
     const count = cell.querySelector(".execution-count");
@@ -219,11 +225,12 @@ function syncTypeControl(select) {
   const type = normalizeType(select.value);
 
   select.value = type;
-  select.size = Math.max(type.length, 4);
+  fitTypeInput(select);
   setCellType(cell, type);
 }
 
 document.querySelectorAll(".cell").forEach(ensureCellChrome);
+document.querySelectorAll(".cell-type-input").forEach(fitTypeInput);
 renumberCells();
 
 cellStack.addEventListener("click", (event) => {
@@ -267,7 +274,7 @@ cellStack.addEventListener("change", (event) => {
 
 cellStack.addEventListener("input", (event) => {
   if (event.target.matches(".cell-type-input")) {
-    event.target.size = Math.max(event.target.value.length, 4);
+    fitTypeInput(event.target);
   }
 });
 
