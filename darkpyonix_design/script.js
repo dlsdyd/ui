@@ -92,11 +92,9 @@ function typeHeader(type) {
 
   return `
     <span class="cell-header">
-      <select class="cell-type-select" aria-label="Cell type">
-        <option value="python" ${type === "python" ? "selected" : ""}>Python</option>
-        <option value="markdown" ${type === "markdown" ? "selected" : ""}>Markdown</option>
-      </select>
-      <span class="cell-type-arrow" aria-hidden="true"></span>
+      <span># %% [</span>
+      <input class="cell-type-input" aria-label="Cell type" value="${type}" size="${Math.max(type.length, 4)}">
+      <span>]</span>
     </span>
   `;
 }
@@ -109,7 +107,7 @@ function markdownBody() {
 }
 
 function codeBody(type) {
-  return `<textarea spellcheck="false">${starterCode[type] || `# ${type} cell\n# cell body`}</textarea>`;
+  return `<textarea spellcheck="false">${starterCode[type] || `# %% [${type}]\n# cell body`}</textarea>`;
 }
 
 function insertBar() {
@@ -220,6 +218,8 @@ function syncTypeControl(select) {
   const cell = select.closest(".cell");
   const type = normalizeType(select.value);
 
+  select.value = type;
+  select.size = Math.max(type.length, 4);
   setCellType(cell, type);
 }
 
@@ -260,14 +260,23 @@ cellStack.addEventListener("click", (event) => {
 });
 
 cellStack.addEventListener("change", (event) => {
-  if (event.target.matches(".cell-type-select")) {
+  if (event.target.matches(".cell-type-input")) {
     syncTypeControl(event.target);
   }
 });
 
+cellStack.addEventListener("input", (event) => {
+  if (event.target.matches(".cell-type-input")) {
+    event.target.size = Math.max(event.target.value.length, 4);
+  }
+});
+
 cellStack.addEventListener("keydown", (event) => {
-  if (!event.target.matches(".cell-type-select")) return;
-  if (event.key === "Enter") event.target.blur();
+  if (event.key === "Enter" && event.target.matches(".cell-type-input")) {
+    event.preventDefault();
+    syncTypeControl(event.target);
+    event.target.blur();
+  }
 });
 
 cellStack.addEventListener("focusin", (event) => {
