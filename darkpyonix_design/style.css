@@ -8,7 +8,7 @@
   --line-strong: #cfd5df;
   --blue: #2563eb;
   --blue-soft: #eff6ff;
-  --sred: #e35b29;
+  --green: #15803d;ㅋ
   --amber: #b45309;
   --red: #dc2626;
   --shadow: 0 16px 38px rgba(16, 24, 40, 0.08);
@@ -226,7 +226,8 @@ button {
   justify-content: flex-end;
 }
 
-.notebook-actions button {
+.notebook-actions button,
+.insert-cell-bar button {
   min-height: 32px;
   padding: 0 11px;
   border: 1px solid var(--line);
@@ -236,21 +237,20 @@ button {
   font-size: 13px;
 }
 
-.notebook-actions button:hover {
+.notebook-actions button:hover,
+.insert-cell-bar button:hover {
   border-color: var(--line-strong);
   background: var(--surface-soft);
 }
 
 .cell-stack {
   display: grid;
-  gap: 4px;
+  gap: 16px;
 }
 
 .cell {
-  position: relative;
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
-  row-gap: 0;
   border: 1px solid transparent;
   border-radius: 9px;
   background: transparent;
@@ -281,7 +281,7 @@ button {
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 8px;
-  color: var(--sred);
+  color: var(--green);
   background: var(--surface);
   font-size: 13px;
   line-height: 1;
@@ -336,7 +336,11 @@ button {
   align-items: center;
   gap: 4px;
   max-width: 100%;
+<<<<<<< HEAD
   min-height: var(--cell-control-size);
+=======
+  min-height: 24px;
+>>>>>>> parent of 581fcdb (hide # %%[])
   padding: 0 7px;
   border: 1px solid var(--line);
   border-radius: 7px;
@@ -347,8 +351,15 @@ button {
   font-weight: 700;
 }
 
+<<<<<<< HEAD
 .cell-header input {
   height: 22px;
+=======
+.cell-header select,
+.cell-header input,
+.insert-cell-bar input {
+  height: 24px;
+>>>>>>> parent of 581fcdb (hide # %%[])
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -359,6 +370,7 @@ button {
   outline: 0;
 }
 
+<<<<<<< HEAD
 .cell-header input {
   width: auto;
   padding: 0 7px;
@@ -367,6 +379,35 @@ button {
 .cell-header input:focus {
   border-color: #93c5fd;
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+=======
+.cell-header select {
+  width: 104px;
+  padding: 0 20px 0 7px;
+}
+
+.cell-header input {
+  width: 88px;
+  padding: 0 7px;
+}
+
+.cell-header select:focus,
+.cell-header input:focus,
+.insert-cell-bar input:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+}
+
+.cell-state {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 0 8px;
+  border-radius: 999px;
+  color: var(--muted);
+  background: var(--surface-soft);
+  font-size: 12px;
+  font-weight: 700;
+>>>>>>> parent of 581fcdb (hide # %%[])
 }
 
 .cell-tools {
@@ -447,24 +488,9 @@ textarea {
 
 .run-result {
   padding: 0 14px 14px;
-  color: var(--sred);
+  color: var(--green);
   font-family: var(--mono);
   font-size: 13px;
-}
-
-.output-stream,
-.output-value {
-  margin: 0;
-  padding: 0 14px 12px;
-  color: var(--text);
-  font-family: var(--mono);
-  font-size: 13px;
-  line-height: 1.6;
-  white-space: pre-wrap;
-}
-
-.output-value {
-  color: var(--blue);
 }
 
 table {
@@ -510,8 +536,13 @@ th {
   background: var(--red);
 }
 
+<<<<<<< HEAD
 .bar.sred {
   background: var(--sred);
+=======
+.bar.green {
+  background: var(--green);
+>>>>>>> parent of 581fcdb (hide # %%[])
 }
 
 .bar.amber {
@@ -529,20 +560,19 @@ th {
 }
 
 .insert-cell-bar {
-  grid-column: 1 / -1;
-  grid-row: 2;
-  position: relative;
-  min-height: 38px;
-  display: flex;
+  display: none;
   align-items: center;
-  justify-content: left;
-  padding: 0 0 0 44px;
-  background: transparent;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 120ms ease;
+  gap: 8px;
+  padding: 9px 10px;
+  border-top: 1px solid var(--line);
+  background: #fbfcfe;
 }
 
+.cell.is-active .insert-cell-bar {
+  display: flex;
+}
+
+<<<<<<< HEAD
 .cell:hover .insert-cell-bar {
   opacity: 1;
   pointer-events: auto;
@@ -568,21 +598,26 @@ th {
   border-radius: 7px;
   color: var(--sred);
   background: var(--surface);
+=======
+.insert-cell-bar > span {
+  color: var(--muted);
+>>>>>>> parent of 581fcdb (hide # %%[])
   font-size: 12px;
   font-weight: 700;
-  line-height: 1;
-  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.12);
 }
 
-.insert-cell span {
-  font-size: 15px;
-  line-height: 0;
+.insert-cell-bar label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--muted);
+  font-family: var(--mono);
+  font-size: 12px;
 }
 
-.insert-cell:hover {
-  border-color: var(--blue);
-  color: #ffffff;
-  background: var(--blue);
+.insert-cell-bar input {
+  width: 112px;
+  padding: 0 8px;
 }
 
 @keyframes sweep {
@@ -649,17 +684,8 @@ th {
   }
 
   .insert-cell-bar {
-    align-items: center;
-    padding-left: 36px;
-  }
-
-  .insert-line {
-    left: 36px;
-  }
-
-  .insert-actions {
+    align-items: flex-start;
     flex-wrap: wrap;
-    justify-content: center;
   }
 }
 
@@ -676,8 +702,20 @@ th {
     flex-wrap: wrap;
   }
 
+<<<<<<< HEAD
   .cell-header input {
     width: 100%;
+=======
+  .cell-header select,
+  .cell-header input,
+  .insert-cell-bar input {
+    width: 100%;
+  }
+
+  .insert-cell-bar button,
+  .insert-cell-bar label {
+    flex: 1 1 auto;
+>>>>>>> parent of 581fcdb (hide # %%[])
   }
 
   .output.has-table {
