@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Darkpyonix Notebook Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app-shell">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+        <div>
+          <strong>Darkpyonix Notebook</strong>
+          <span>starboard-python.py</span>
+        </div>
+      </div>
+
+      <nav class="top-tabs" aria-label="workspace tabs">
+        <button class="tab is-active">Notebook</button>
+        <button class="tab">Data</button>
+        <button class="tab">Runs</button>
+        <button class="tab">Share</button>
+      </nav>
+
+      <div class="runtime">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span>Python 3.12</span>
+        <button class="icon-button" title="Run all cells" aria-label="Run all cells" id="runAllBtn">▶</button>
+      </div>
+    </header>
+
+    <main class="workspace">
+      <aside class="sidebar" aria-label="notebook outline">
+        <div class="sidebar-section">
+          <div class="section-head">
+            <span>Files</span>
+            <button class="mini-button" title="New file" aria-label="New file">+</button>
+          </div>
+          <button class="file-row is-selected">
+            <span class="file-icon">nb</span>
+            <span>starboard-python.py</span>
+          </button>
+          <button class="file-row">
+            <span class="file-icon csv">csv</span>
+            <span>mtcars.csv</span>
+          </button>
+          <button class="file-row">
+            <span class="file-icon py">py</span>
+            <span>darkpyonix_tools.py</span>
+          </button>
+        </div>
+
+        <div class="sidebar-section outline">
+          <div class="section-head">
+            <span>Outline</span>
+            <button class="mini-button" title="Collapse outline" aria-label="Collapse outline">⌃</button>
+          </div>
+          <a href="#cell-1" class="outline-link is-current">
+            <span>01</span>
+            <strong>Python runtime</strong>
+          </a>
+          <a href="#cell-2" class="outline-link">
+            <span>02</span>
+            <strong>Markdown intro</strong>
+          </a>
+          <a href="#cell-3" class="outline-link">
+            <span>03</span>
+            <strong>Package install</strong>
+          </a>
+        </div>
+      </aside>
+
+      <section class="notebook" aria-label="cell notebook">
+        <div class="notebook-head">
+          <div>
+            <p>Notebook</p>
+            <h1>starboard-python.py</h1>
+          </div>
+          <div class="notebook-actions">
+            <button id="clearOutputBtn">Clear Output</button>
+          </div>
+        </div>
+
+        <div class="cell-stack" id="cellStack">
+          <article class="cell is-active" id="cell-1" data-type="python">
+            <div class="cell-rail">
+              <button class="run-button" title="Run cell" aria-label="Run cell">▶</button>
+              <span class="execution-count">[1]</span>
+            </div>
+            <div class="cell-main">
+              <div class="cell-toolbar">
+                <div>
+                  <span class="cell-header"># %% [<select class="cell-type-select" aria-label="Cell type"><option value="python" selected>python</option><option value="markdown">markdown</option><option value="custom">custom</option></select><input class="cell-custom-type" aria-label="Custom cell type" placeholder="shell" hidden>]</span>
+                  <span class="cell-state">Ready</span>
+                </div>
+                <div class="cell-tools">
+                  <button title="Move up" aria-label="Move up">↑</button>
+                  <button title="Move down" aria-label="Move down">↓</button>
+                  <button title="Delete cell" aria-label="Delete cell" class="delete-cell">×</button>
+                </div>
+              </div>
+              <textarea spellcheck="false"># When you first run this cell it will load the Python runtime.
+message = "Hello Python!"
+print(message)
+
+x = [i**2 for i in range(5)]
+x</textarea>
+              <div class="output has-table">
+                <div class="output-head">
+                  <span>Output</span>
+                  <span>42 ms</span>
+                </div>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>index</th>
+                      <th>value</th>
+                      <th>type</th>
+                      <th>runtime</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>0</td>
+                      <td>Hello Python!</td>
+                      <td>str</td>
+                      <td>pyodide</td>
+                    </tr>
+                    <tr>
+                      <td>1</td>
+                      <td>[0, 1, 4, 9, 16]</td>
+                      <td>list</td>
+                      <td>browser</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>ready</td>
+                      <td>status</td>
+                      <td>cached</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </article>
+
+          <article class="cell markdown-cell" id="cell-2" data-type="markdown">
+            <div class="cell-rail">
+              <button class="run-button" title="Render text" aria-label="Render text">▶</button>
+              <span class="execution-count">[2]</span>
+            </div>
+            <div class="cell-main">
+              <div class="cell-toolbar">
+                <div>
+                  <span class="cell-header"># %% [<select class="cell-type-select" aria-label="Cell type"><option value="python">python</option><option value="markdown" selected>markdown</option><option value="custom">custom</option></select><input class="cell-custom-type" aria-label="Custom cell type" placeholder="shell" hidden>]</span>
+                  <span class="cell-state">Rendered</span>
+                </div>
+                <div class="cell-tools">
+                  <button title="Move up" aria-label="Move up">↑</button>
+                  <button title="Move down" aria-label="Move down">↓</button>
+                  <button title="Delete cell" aria-label="Delete cell" class="delete-cell">×</button>
+                </div>
+              </div>
+              <div class="markdown-preview" contenteditable="true">
+                <h2>Python support in Starboard Notebook</h2>
+                <p>Pyodide 기반 Python, Markdown 셀을 중심으로 작성하고, 필요한 곳에서는 직접 타입을 추가한다.</p>
+              </div>
+            </div>
+          </article>
+
+          <article class="cell" id="cell-3" data-type="python">
+            <div class="cell-rail">
+              <button class="run-button" title="Run cell" aria-label="Run cell">▶</button>
+              <span class="execution-count">[3]</span>
+            </div>
+            <div class="cell-main">
+              <div class="cell-toolbar">
+                <div>
+                  <span class="cell-header"># %% [<select class="cell-type-select" aria-label="Cell type"><option value="python" selected>python</option><option value="markdown">markdown</option><option value="custom">custom</option></select><input class="cell-custom-type" aria-label="Custom cell type" placeholder="shell" hidden>]</span>
+                  <span class="cell-state">Idle</span>
+                </div>
+                <div class="cell-tools">
+                  <button title="Move up" aria-label="Move up">↑</button>
+                  <button title="Move down" aria-label="Move down">↓</button>
+                  <button title="Delete cell" aria-label="Delete cell" class="delete-cell">×</button>
+                </div>
+              </div>
+              <textarea spellcheck="false">import micropip
+micropip.install("squarify")
+
+darkpyonix.uv.add("transformers")
+darkpyonix.pip.install("requests")</textarea>
+              <div class="output chart-output">
+                <div class="output-head">
+                  <span>Output</span>
+                  <span>118 ms</span>
+                </div>
+                <div class="bar-chart" aria-label="usage chart">
+                  <div class="bar" style="height: 74%"><span>Pro</span></div>
+                  <div class="bar accent" style="height: 38%"><span>Basic</span></div>
+                  <div class="bar green" style="height: 61%"><span>Team</span></div>
+                  <div class="bar amber" style="height: 49%"><span>Free</span></div>
+                </div>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <aside class="inspector" aria-label="runtime inspector">
+        <div class="panel">
+          <div class="section-head">
+            <span>Runtime</span>
+            <span class="pill">Live</span>
+          </div>
+          <div class="meter">
+            <div>
+              <span>CPU</span>
+              <strong>34%</strong>
+            </div>
+            <div class="meter-track">
+              <span style="width: 34%"></span>
+            </div>
+          </div>
+          <div class="meter">
+            <div>
+              <span>Memory</span>
+              <strong>2.1 GB</strong>
+            </div>
+            <div class="meter-track warm">
+              <span style="width: 58%"></span>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel variables">
+          <div class="section-head">
+            <span>Variables</span>
+            <button class="mini-button" title="Refresh variables" aria-label="Refresh variables">⟳</button>
+          </div>
+          <div class="variable-row">
+            <span>df</span>
+            <strong>DataFrame</strong>
+          </div>
+          <div class="variable-row">
+            <span>model</span>
+            <strong>LogReg</strong>
+          </div>
+          <div class="variable-row">
+            <span>score</span>
+            <strong>0.87</strong>
+          </div>
+        </div>
+
+        <div class="panel comments">
+          <div class="section-head">
+            <span>Notes</span>
+            <span class="pill quiet">3</span>
+          </div>
+          <button class="note is-open">
+            <strong>데이터 누락 확인</strong>
+            <span>cell 1</span>
+          </button>
+          <button class="note">
+            <strong>모델 비교 추가</strong>
+            <span>cell 3</span>
+          </button>
+        </div>
+      </aside>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
