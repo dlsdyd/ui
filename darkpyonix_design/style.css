@@ -8,7 +8,7 @@
   --line-strong: #cfd5df;
   --blue: #2563eb;
   --blue-soft: #eff6ff;
-  --green: #15803d;
+  --sred: #e35b29;
   --amber: #b45309;
   --red: #dc2626;
   --shadow: 0 16px 38px rgba(16, 24, 40, 0.08);
@@ -225,8 +225,7 @@ button {
   justify-content: flex-end;
 }
 
-.notebook-actions button,
-.insert-cell-bar button {
+.notebook-actions button {
   min-height: 32px;
   padding: 0 11px;
   border: 1px solid var(--line);
@@ -236,20 +235,21 @@ button {
   font-size: 13px;
 }
 
-.notebook-actions button:hover,
-.insert-cell-bar button:hover {
+.notebook-actions button:hover {
   border-color: var(--line-strong);
   background: var(--surface-soft);
 }
 
 .cell-stack {
   display: grid;
-  gap: 16px;
+  gap: 4px;
 }
 
 .cell {
+  position: relative;
   display: grid;
   grid-template-columns: 44px minmax(0, 1fr);
+  row-gap: 0;
   border: 1px solid transparent;
   border-radius: 9px;
   background: transparent;
@@ -280,7 +280,7 @@ button {
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 8px;
-  color: var(--green);
+  color: var(--sred);
   background: var(--surface);
   box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
 }
@@ -330,60 +330,46 @@ button {
 .cell-header {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
+  gap: 3px;
   max-width: 100%;
   min-height: 24px;
-  padding: 0 7px;
-  border: 1px solid var(--line);
-  border-radius: 7px;
+  padding: 0 4px;
+  border: 0;
+  border-radius: 6px;
   color: #344054;
-  background: var(--surface);
-  font-family: var(--mono);
-  font-size: 12px;
+  background: transparent;
+  font-size: 13px;
   font-weight: 700;
 }
 
-.cell-header select,
-.cell-header input,
-.insert-cell-bar input {
+.cell-type-select {
   height: 24px;
   min-width: 0;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  padding: 0;
+  border: 0;
   color: var(--text);
-  background: var(--surface);
-  font-family: var(--mono);
-  font-size: 12px;
+  background: transparent;
+  appearance: none;
+  font: inherit;
+  font-size: 13px;
+  line-height: 1;
   outline: 0;
+  cursor: pointer;
 }
 
-.cell-header select {
-  width: 104px;
-  padding: 0 20px 0 7px;
+.cell-type-select:focus-visible {
+  border-radius: 5px;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.14);
 }
 
-.cell-header input {
-  width: 88px;
-  padding: 0 7px;
-}
-
-.cell-header select:focus,
-.cell-header input:focus,
-.insert-cell-bar input:focus {
-  border-color: #93c5fd;
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
-}
-
-.cell-state {
-  display: inline-flex;
-  align-items: center;
-  min-height: 22px;
-  padding: 0 8px;
-  border-radius: 999px;
-  color: var(--muted);
-  background: var(--surface-soft);
-  font-size: 12px;
-  font-weight: 700;
+.cell-type-arrow {
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  border-top: 5px solid var(--muted);
+  pointer-events: none;
 }
 
 .cell-tools {
@@ -464,9 +450,24 @@ textarea {
 
 .run-result {
   padding: 0 14px 14px;
-  color: var(--green);
+  color: var(--sred);
   font-family: var(--mono);
   font-size: 13px;
+}
+
+.output-stream,
+.output-value {
+  margin: 0;
+  padding: 0 14px 12px;
+  color: var(--text);
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.output-value {
+  color: var(--blue);
 }
 
 table {
@@ -513,7 +514,7 @@ th {
 }
 
 .bar.green {
-  background: var(--green);
+  background: var(--sred);
 }
 
 .bar.amber {
@@ -531,36 +532,60 @@ th {
 }
 
 .insert-cell-bar {
-  display: none;
-  align-items: center;
-  gap: 8px;
-  padding: 9px 10px;
-  border-top: 1px solid var(--line);
-  background: #fbfcfe;
-}
-
-.cell.is-active .insert-cell-bar {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  position: relative;
+  min-height: 38px;
   display: flex;
+  align-items: center;
+  justify-content: left;
+  padding: 0 0 0 44px;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 120ms ease;
 }
 
-.insert-cell-bar > span {
-  color: var(--muted);
-  font-size: 12px;
-  font-weight: 700;
+.cell:hover .insert-cell-bar {
+  opacity: 1;
+  pointer-events: auto;
 }
 
-.insert-cell-bar label {
+.insert-actions {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 8px;
+  background: var(--bg);
+}
+
+.insert-cell {
+  min-height: 28px;
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  color: var(--muted);
-  font-family: var(--mono);
+  gap: 5px;
+  padding: 0 10px;
+  border: 1px solid #b7d4ff;
+  border-radius: 7px;
+  color: var(--blue);
+  background: var(--surface);
   font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 6px 14px rgba(37, 99, 235, 0.12);
 }
 
-.insert-cell-bar input {
-  width: 112px;
-  padding: 0 8px;
+.insert-cell span {
+  font-size: 15px;
+  line-height: 0;
+}
+
+.insert-cell:hover {
+  border-color: var(--blue);
+  color: #ffffff;
+  background: var(--blue);
 }
 
 @keyframes sweep {
@@ -627,8 +652,17 @@ th {
   }
 
   .insert-cell-bar {
-    align-items: flex-start;
+    align-items: center;
+    padding-left: 36px;
+  }
+
+  .insert-line {
+    left: 36px;
+  }
+
+  .insert-actions {
     flex-wrap: wrap;
+    justify-content: center;
   }
 }
 
@@ -645,15 +679,8 @@ th {
     flex-wrap: wrap;
   }
 
-  .cell-header select,
-  .cell-header input,
-  .insert-cell-bar input {
-    width: 100%;
-  }
-
-  .insert-cell-bar button,
-  .insert-cell-bar label {
-    flex: 1 1 auto;
+  .cell-type-select {
+    max-width: 100%;
   }
 
   .output.has-table {

@@ -15,10 +15,6 @@
           <span></span>
           <span></span>
         </div>
-        <div>
-          <strong>Darkpyonix Notebook</strong>
-          <span>starboard-python.py</span>
-        </div>
       </div>
 
       <nav class="top-tabs" aria-label="workspace tabs">
@@ -44,7 +40,7 @@
           </div>
           <button class="file-row is-selected">
             <span class="file-icon">nb</span>
-            <span>starboard-python.py</span>
+            <span></span>
           </button>
           <button class="file-row">
             <span class="file-icon csv">csv</span>
@@ -79,8 +75,7 @@
       <section class="notebook" aria-label="cell notebook">
         <div class="notebook-head">
           <div>
-            <p>Notebook</p>
-            <h1>starboard-python.py</h1>
+            
           </div>
           <div class="notebook-actions">
             <button id="clearOutputBtn">Clear Output</button>
@@ -96,8 +91,13 @@
             <div class="cell-main">
               <div class="cell-toolbar">
                 <div>
-                  <span class="cell-header"># %% [<select class="cell-type-select" aria-label="Cell type"><option value="python" selected>python</option><option value="markdown">markdown</option><option value="custom">custom</option></select><input class="cell-custom-type" aria-label="Custom cell type" placeholder="shell" hidden>]</span>
-                  <span class="cell-state">Ready</span>
+                  <span class="cell-header">
+                    <select class="cell-type-select" aria-label="Cell type">
+                      <option value="python" selected>Python</option>
+                      <option value="markdown">Markdown</option>
+                    </select>
+                    <span class="cell-type-arrow" aria-hidden="true"></span>
+                  </span>
                 </div>
                 <div class="cell-tools">
                   <button title="Move up" aria-label="Move up">↑</button>
@@ -111,41 +111,13 @@ print(message)
 
 x = [i**2 for i in range(5)]
 x</textarea>
-              <div class="output has-table">
+              <div class="output">
                 <div class="output-head">
                   <span>Output</span>
                   <span>42 ms</span>
                 </div>
-                <table>
-                  <thead>
-                    <tr>
-                      <th>index</th>
-                      <th>value</th>
-                      <th>type</th>
-                      <th>runtime</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td>0</td>
-                      <td>Hello Python!</td>
-                      <td>str</td>
-                      <td>pyodide</td>
-                    </tr>
-                    <tr>
-                      <td>1</td>
-                      <td>[0, 1, 4, 9, 16]</td>
-                      <td>list</td>
-                      <td>browser</td>
-                    </tr>
-                    <tr>
-                      <td>2</td>
-                      <td>ready</td>
-                      <td>status</td>
-                      <td>cached</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <pre class="output-stream">Hello Python!</pre>
+                <pre class="output-value">[0, 1, 4, 9, 16]</pre>
               </div>
             </div>
           </article>
@@ -158,8 +130,13 @@ x</textarea>
             <div class="cell-main">
               <div class="cell-toolbar">
                 <div>
-                  <span class="cell-header"># %% [<select class="cell-type-select" aria-label="Cell type"><option value="python">python</option><option value="markdown" selected>markdown</option><option value="custom">custom</option></select><input class="cell-custom-type" aria-label="Custom cell type" placeholder="shell" hidden>]</span>
-                  <span class="cell-state">Rendered</span>
+                  <span class="cell-header">
+                    <select class="cell-type-select" aria-label="Cell type">
+                      <option value="python">Python</option>
+                      <option value="markdown" selected>Markdown</option>
+                    </select>
+                    <span class="cell-type-arrow" aria-hidden="true"></span>
+                  </span>
                 </div>
                 <div class="cell-tools">
                   <button title="Move up" aria-label="Move up">↑</button>
@@ -182,8 +159,13 @@ x</textarea>
             <div class="cell-main">
               <div class="cell-toolbar">
                 <div>
-                  <span class="cell-header"># %% [<select class="cell-type-select" aria-label="Cell type"><option value="python" selected>python</option><option value="markdown">markdown</option><option value="custom">custom</option></select><input class="cell-custom-type" aria-label="Custom cell type" placeholder="shell" hidden>]</span>
-                  <span class="cell-state">Idle</span>
+                  <span class="cell-header">
+                    <select class="cell-type-select" aria-label="Cell type">
+                      <option value="python" selected>Python</option>
+                      <option value="markdown">Markdown</option>
+                    </select>
+                    <span class="cell-type-arrow" aria-hidden="true"></span>
+                  </span>
                 </div>
                 <div class="cell-tools">
                   <button title="Move up" aria-label="Move up">↑</button>

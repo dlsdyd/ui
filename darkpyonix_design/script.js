@@ -63,21 +63,18 @@ function createOutput(type) {
 
 function runCell(cell) {
   setActiveCell(cell);
-  const state = cell.querySelector(".cell-state");
   let output = cell.querySelector(".output");
 
   if (!output) {
     output = createOutput(cell.dataset.type);
-    cell.querySelector(".cell-main").insertBefore(output, cell.querySelector(".insert-cell-bar"));
+    cell.querySelector(".cell-main").append(output);
   }
 
-  state.textContent = "Running";
   output.classList.add("is-running");
   output.querySelector(".output-head span:last-child").textContent = "running";
 
   window.setTimeout(() => {
     executionIndex += 1;
-    state.textContent = cell.dataset.type === "markdown" ? "Rendered" : "Complete";
     output.classList.remove("is-running");
     output.querySelector(".output-head span:last-child").textContent = `${36 + executionIndex * 7} ms`;
 
@@ -90,26 +87,16 @@ function runCell(cell) {
   }, 620);
 }
 
-function typeOptions(type) {
-  const selectedType = defaultCellTypes.includes(type) ? type : "custom";
-
-  return [...defaultCellTypes, "custom"]
-    .map((item) => {
-      const label = item === "custom" ? "custom" : item;
-      return `<option value="${item}" ${item === selectedType ? "selected" : ""}>${label}</option>`;
-    })
-    .join("");
-}
-
 function typeHeader(type) {
-  const isDefaultType = defaultCellTypes.includes(type);
+  type = normalizeType(type);
 
   return `
     <span class="cell-header">
-      <span># %% [</span>
-      <select class="cell-type-select" aria-label="Cell type">${typeOptions(type)}</select>
-      <input class="cell-custom-type" aria-label="Custom cell type" placeholder="shell" value="${isDefaultType ? "" : type}" ${isDefaultType ? "hidden" : ""}>
-      <span>]</span>
+      <select class="cell-type-select" aria-label="Cell type">
+        <option value="python" ${type === "python" ? "selected" : ""}>Python</option>
+        <option value="markdown" ${type === "markdown" ? "selected" : ""}>Markdown</option>
+      </select>
+      <span class="cell-type-arrow" aria-hidden="true"></span>
     </span>
   `;
 }
@@ -122,21 +109,23 @@ function markdownBody() {
 }
 
 function codeBody(type) {
-  return `<textarea spellcheck="false">${starterCode[type] || `# %% [${type}]\n# custom cell body`}</textarea>`;
+  return `<textarea spellcheck="false">${starterCode[type] || `# ${type} cell\n# cell body`}</textarea>`;
 }
 
 function insertBar() {
   return `
     <div class="insert-cell-bar" aria-label="Add cell below">
-      <span>Add below</span>
-      <button class="insert-python" type="button">+ Python</button>
-      <button class="insert-markdown" type="button">+ Markdown</button>
-      <label>
-        <span># %% [</span>
-        <input class="insert-custom-type" type="text" placeholder="shell">
-        <span>]</span>
-      </label>
-      <button class="insert-custom" type="button">Add</button>
+      <span class="insert-line" aria-hidden="true"></span>
+      <div class="insert-actions">
+        <button class="insert-cell" type="button" data-cell-type="python" title="Add code cell" aria-label="Add code cell below">
+          <span aria-hidden="true">+</span>
+          Code
+        </button>
+        <button class="insert-cell" type="button" data-cell-type="markdown" title="Add markdown cell" aria-label="Add markdown cell below">
+          <span aria-hidden="true">+</span>
+          Markdown
+        </button>
+      </div>
     </div>
   `;
 }
@@ -156,7 +145,6 @@ function buildCell(type) {
       <div class="cell-toolbar">
         <div>
           ${typeHeader(type)}
-          <span class="cell-state">${type === "markdown" ? "Draft" : "Idle"}</span>
         </div>
         <div class="cell-tools">
           <button title="Move up" aria-label="Move up">↑</button>
@@ -165,8 +153,8 @@ function buildCell(type) {
         </div>
       </div>
       ${type === "markdown" ? markdownBody() : codeBody(type)}
-      ${insertBar()}
     </div>
+    ${insertBar()}
   `;
 
   return cell;
@@ -179,7 +167,7 @@ function ensureCellChrome(cell) {
   cell.dataset.type = type;
   if (header) header.outerHTML = typeHeader(type);
   if (!cell.querySelector(".insert-cell-bar")) {
-    cell.querySelector(".cell-main").insertAdjacentHTML("beforeend", insertBar());
+    cell.insertAdjacentHTML("beforeend", insertBar());
   }
 }
 
@@ -192,7 +180,6 @@ function setCellType(cell, type) {
   cell.classList.toggle("markdown-cell", type === "markdown");
   cell.querySelector(".run-button").title = type === "markdown" ? "Render markdown" : "Run cell";
   cell.querySelector(".run-button").setAttribute("aria-label", type === "markdown" ? "Render markdown" : "Run cell");
-  cell.querySelector(".cell-state").textContent = type === "markdown" ? "Draft" : "Idle";
 
   if (previousType === "markdown" && type !== "markdown") {
     body.outerHTML = codeBody(type);
@@ -211,6 +198,10 @@ function addCellAfter(anchorCell, type) {
   renumberCells();
   setActiveCell(cell);
   cell.scrollIntoView({ behavior: "smooth", block: "center" });
+  window.setTimeout(() => {
+    const editable = cell.querySelector("textarea, .markdown-preview");
+    editable?.focus();
+  }, 260);
 }
 
 function moveCell(cell, direction) {
@@ -227,17 +218,9 @@ function moveCell(cell, direction) {
 
 function syncTypeControl(select) {
   const cell = select.closest(".cell");
-  const customInput = cell.querySelector(".cell-custom-type");
+  const type = normalizeType(select.value);
 
-  if (select.value === "custom") {
-    customInput.hidden = false;
-    customInput.focus();
-    setCellType(cell, customInput.value);
-    return;
-  }
-
-  customInput.hidden = true;
-  setCellType(cell, select.value);
+  setCellType(cell, type);
 }
 
 document.querySelectorAll(".cell").forEach(ensureCellChrome);
@@ -261,18 +244,9 @@ cellStack.addEventListener("click", (event) => {
     if (next) setActiveCell(next);
   }
 
-  if (event.target.closest(".insert-python")) {
-    addCellAfter(cell, "python");
-  }
-
-  if (event.target.closest(".insert-markdown")) {
-    addCellAfter(cell, "markdown");
-  }
-
-  if (event.target.closest(".insert-custom")) {
-    const customType = cell.querySelector(".insert-custom-type");
-    addCellAfter(cell, customType.value);
-    customType.value = "";
+  const insertButton = event.target.closest(".insert-cell");
+  if (insertButton) {
+    addCellAfter(cell, insertButton.dataset.cellType || "python");
   }
 
   const toolButton = event.target.closest(".cell-tools button");
@@ -291,18 +265,9 @@ cellStack.addEventListener("change", (event) => {
   }
 });
 
-cellStack.addEventListener("input", (event) => {
-  if (event.target.matches(".cell-custom-type")) {
-    setCellType(event.target.closest(".cell"), event.target.value);
-  }
-});
-
 cellStack.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && event.target.matches(".insert-custom-type")) {
-    event.preventDefault();
-    addCellAfter(event.target.closest(".cell"), event.target.value);
-    event.target.value = "";
-  }
+  if (!event.target.matches(".cell-type-select")) return;
+  if (event.key === "Enter") event.target.blur();
 });
 
 cellStack.addEventListener("focusin", (event) => {
@@ -312,9 +277,6 @@ cellStack.addEventListener("focusin", (event) => {
 
 clearOutputBtn.addEventListener("click", () => {
   document.querySelectorAll(".cell .output").forEach((output) => output.remove());
-  document.querySelectorAll(".cell-state").forEach((state) => {
-    state.textContent = state.closest(".cell").dataset.type === "markdown" ? "Draft" : "Idle";
-  });
 });
 
 runAllBtn.addEventListener("click", () => {
